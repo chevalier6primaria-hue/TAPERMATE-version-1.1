@@ -1,0 +1,23 @@
+name: Build TAPERMATE v1.1
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure (CMake, x64)
+        run: cmake -B build -A x64
+
+      - name: Build (Release)
+        run: cmake --build build --config Release --target TAPERMATE_VST3 --parallel 4
+
+      - name: Upload VST3
+        uses: actions/upload-artifact@v4
+        with:
+          name: TAPERMATE-v1.1-VST3-Windows
+          path: build/TAPERMATE_artefacts/Release/VST3/
